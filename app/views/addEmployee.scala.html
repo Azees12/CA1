@@ -1,0 +1,42 @@
+@(EmployeeForm: Form[models.Employee],user: models.users.User)
+@import models.Department
+@import models.Employee
+@import models.users.User
+@import models.Project
+
+
+@import helper._
+@main("Add Employee",user){
+    <p class="lead">Add a Employee</p>
+    
+    @form(action=routes.HomeController.addEmployeeSubmit(), 'class -> "form-horizontal",'role ->"form", 'enctype -> "multipart/form-data") {
+    
+    @CSRF.formField
+    @inputText(EmployeeForm("id"), '_label -> "", 'hidden -> "hidden")
+    @inputText(EmployeeForm("email"), '_label -> "Email",'_showConstraints ->false, 'class -> "form-control")
+    @inputText(EmployeeForm("name"), '_label -> "Name",'_showConstraints ->false, 'class -> "form-control")
+    
+    @select(
+      EmployeeForm("department.id"),
+      options(Department.options),
+      '_label -> "Select Department",'_default -> " Select One ",
+      '_showConstraints ->false, 'class -> "form-control"
+    )
+
+<label>Image</label>
+<input class ="btn-sm btn-default" type="file" name="upload">
+<br><br>
+
+<br>
+    <br>
+  
+
+
+    <div class="action">
+        <input type="submit" value="Add Employee" class="btn btn-primary">
+        <a href="@routes.HomeController.ListEmployee(0)">
+            <button type="button" class="btn btn-warning">Cancel</button>
+        </a>
+    </div>
+}
+}

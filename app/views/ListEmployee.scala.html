@@ -1,0 +1,152 @@
+@(employees: List[models.Employee],user: models.users.User,departments: List[models.Department], env: play.api.Environment, projects: List[models.Project])
+
+
+@main("Employees",user){
+     <p class ="lead">Employees</p> 
+<div class ="row">
+    <div class ="col-sm-2">
+    
+     <ul class ="list-group">
+         <h4 class= "list-group-item">Departments</h4>
+         <a href="@routes.HomeController.ListEmployee(0)" class ="list-group-item">All Departments</a>
+        @for(d <- departments){
+         <a href="@routes.HomeController.ListEmployee(d.getDepartmentId)" class ="list-group-item">@d.getDepartment
+             <span class="badge">@d.getEmployees.size()</span>
+         </a>   
+        }
+     </ul>
+
+
+     <ul class ="list-group">
+        <h4 class= "list-group-item">Projects</h4>
+        <a href="@routes.HomeController.ListEmployee(0)" class ="list-group-item">All Departments</a>
+       @for(d <- projects){
+        <a  class ="list-group-item">@d.getname
+            <span class="badge">@d.getMembers.size()</span>
+        </a>   
+       }
+    </ul>
+
+
+    </div>
+<div class ="col-sm-10">
+    <table class ="table table-bordered table-hover table-condensed">
+        <thead>
+            <tr>
+                <th>Photo</th>
+                <th>Name</th>
+                <th>Department</th>
+                <th>Email</th>
+                <th>Projects</th>
+                <th>Edit</th>
+                <th>Remove </th>
+            </tr>
+        </thead>
+        <tbody> 
+@for(p<-employees){
+<tr>
+    
+        @if(env.resource("public/images/EmployeePic/thumbnails"+ p.getId + ".jpg").isDefined){
+            <td><img src "/assets/images/EmployeePic/thumbnails/@(p.getId +".jpg")"/></td>
+        } else{
+            <td><a>No Photo Available</a></td>
+        }
+    <td>@p.getName</td>
+    <td>@p.getDepartment.getDepartment</td>
+    <td>@p.getEmail</td> 
+    <td>
+        <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Projects
+            <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+             @for(p<-p.getProjects){
+              <li>@p.getname</li>
+             }
+            </ul>
+        </div> 
+        </td>    
+        <td>
+            <a href ="@routes.HomeController.updateEmployee(p.getId)" class="button-xs btn danger">
+               <span class="gyphicon glyphicon-pencil"></span> </a>
+        </td>
+        
+     <td> 
+         <a href ="@routes.HomeController.deleteEmployee(p.getId)" class="button-xs btn-danger" onclick ="return confirmDel();">
+             <span class= "glyphicon glyphicon-trash"></span>
+            </a>
+        </td>   
+        
+</tr>
+}
+
+
+</tbody>
+</table>
+
+
+
+<p>
+<a href="@routes.HomeController.addEmployee()">
+ <button class ="btn btn-primary">Add a Employee</button>
+</a>
+
+</p>
+<br><br><br>
+
+
+<div class ="col-sm-10">
+    <table class ="table table-bordered table-hover table-condensed">
+        <thead>
+            <tr>         
+                <th>Project Name</th>
+                <th>Members</th>
+                <th>Add Members</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody> 
+                @for(c<-projects){
+            <tr>
+            <td>@c.getname</td>
+            <td>
+                    <div class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Members
+                            <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                             @for(d<-c.getMembers){
+                              <li>@d.getName</li>
+                             }
+                            </ul>
+                        </div> 
+            </td>
+
+             <td>
+            <a href ="@routes.HomeController.updateProject(c.getId)" class="button-xs btn danger">
+               <span class="gyphicon glyphicon-pencil"></span> </a>
+        </td>
+        
+     <td> 
+         <a href ="@routes.HomeController.deleteProject(c.getId)" class="button-xs btn-danger" onclick ="return confirmDel();">
+             <span class= "glyphicon glyphicon-trash"></span>
+            </a>
+        </td>   
+
+
+</tr>
+                }
+       </tbody>
+       </table>
+
+       <p>
+        <a href="@routes.HomeController.addProject()">
+         <button class ="btn btn-primary">Add a new Project</button>
+        </a>
+        </p>
+
+
+
+
+
+
+
+}

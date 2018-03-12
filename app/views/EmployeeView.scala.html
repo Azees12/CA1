@@ -1,0 +1,31 @@
+@import models.Employee
+@import models.users.User
+
+@(p: Employee,user: User,env: play.api.Environment)
+
+
+@main("Employee", user) {
+
+    <div class="jumbotron text-center">
+        <h1>@p.getName</h1>
+        <h3>@p.getDepartment.getDepartment()</h3> 
+    </div>
+    @if(env.resource("public/images/productImages/" + p.getId + ".jpg").isDefined) {
+        <img src="/assets/images/EmployeePic/@(p.getId + ".jpg")"/><
+    } else {
+        <a>no image added</a>
+    }
+
+    <h2>Projects</h2>
+    
+        <ul class="list-group">
+           @for(p <-p.getProjects){ 
+         
+                <li class="list-group-item">@p.getname</li>
+            
+         
+        }
+        </ul>
+    
+
+}

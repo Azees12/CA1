@@ -1,0 +1,54 @@
+@(ProjectForm: Form[models.Project],user: models.users.User)
+@import models.Department
+@import models.Employee
+@import models.users.User
+@import models.Project
+
+@import helper._
+@main("Add Project",user){
+    <p class="lead">Add a Project</p>
+
+    @form(action=routes.HomeController.addProjectSubmit(), 'class -> "form-horizontal",'role ->"form") {
+
+        @CSRF.formField
+        @inputText(ProjectForm("id"), '_label -> "", 'hidden -> "hidden")
+        @inputText(ProjectForm("name"), '_label -> "Name",'_showConstraints ->false, 'class -> "form-control")
+
+
+
+        @for((value, name) <- Employee.options) {
+            <input type="checkbox" name="empSelect[]" value="@value"
+        
+            
+            />@name<br>        
+        }
+
+        <div class="action">
+            <input type="submit" value="Add Project" class="btn btn-primary">
+            <a href="@routes.HomeController.ListEmployee(0)">
+                <button type="button" class="btn btn-warning">Cancel</button>
+            </a>
+        </div>
+    
+    }
+}
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

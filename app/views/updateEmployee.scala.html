@@ -1,0 +1,44 @@
+@import models.Employee
+@import models.Department
+@import models.users.User
+@import models.Project
+
+@(id: Long, updateEmployeeForm: Form[Employee], user: User)
+
+
+@import helper._
+@main("Update Employee", user) {
+
+	<h3>Update Employee</h3>
+
+	@form(action = routes.HomeController.updateEmployeeSubmit(id), 'class -> "form-horizontal", 'role->"form", 'enctype -> "multipart/form-data") {
+		
+		@CSRF.formField
+		
+		@inputText(updateEmployeeForm("email"), '_label -> "Email",'_showConstraints ->false, 'class -> "form-control")
+        @inputText(updateEmployeeForm("name"), '_label -> "Name",'_showConstraints ->false, 'class -> "form-control")
+        
+        @select(
+            updateEmployeeForm("department.id"),
+            options(Department.options),
+            '_label -> "Select Department",'_default -> " Select One ",
+            '_showConstraints ->true, 'class -> "form-control"
+          )
+
+		<label>Image</label>
+    <input class="btn-sm btn-default" type="file" name="upload">
+	
+		<br><br>
+
+
+    <div class="action">
+    <input type="submit" value="Add Employee" class="btn btn-primary">
+    <a href="@routes.HomeController.ListEmployee(0)">
+        <button type="button" class="btn btn-warning">Cancel</button>
+    </a>
+</div>>
+	} 
+
+} 
+
+
